@@ -1,0 +1,13 @@
+{
+  "name": "asx-bot-cli",
+  "version": "1.0.1",
+  "description": "ASX chatbot CLI, get answers to any question in the terminal instantly. By Neune Labs",
+  "bin": {
+    "asx": "./bin/asx.exe"
+  },
+  "scripts": {
+    "prepare": "go build -o ./bin/asx.exe"
+  },
+  "author": "fardays",
+  "license": "ISC"
+}
