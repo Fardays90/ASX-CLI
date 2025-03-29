@@ -1,6 +1,6 @@
 # ASX Chatbot CLI
 
-ASX is a chatbot CLI tool that lets you get answers to any question directly in your terminal. Developed by **Neune Labs**, it connects to an AI-powered backend and helps you have interactive conversations right in the command line interface. Whether you need quick answers or just want to chat, ASX is here to provide a seamless experience in your terminal.
+ASX is a chatbot CLI tool that lets you get answers to any question directly in your terminal. Developed by **Neune Labs**, it connects to an AI-powered backend and helps you have interactive conversations right in the command line interface. Whether you need quick answers or just want to chat, ASX is here to provide a nice experience in your terminal.
 
 ---
 
