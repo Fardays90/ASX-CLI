@@ -12,4 +12,6 @@ ASX is a chatbot CLI tool that lets you get answers to any question directly in 
 - **Free usage**: Talk to the bot for up to 4 messages before creating a new session.
 
 ---
-run npx asx-bot-cli
+
+```bash
+npx asx-bot-cli
