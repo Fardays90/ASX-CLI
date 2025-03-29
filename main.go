@@ -8,6 +8,13 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"time"
+
+	"regexp"
+
+	"github.com/briandowns/spinner"
+	"github.com/fatih/color"
 )
 
 var apiUrl = "https://api.neunelabs.com/v1/endpoint"
@@ -20,6 +27,23 @@ type Request struct {
 type Response struct {
 	Query    string `json:"query"`
 	Response string `json:"response"`
+}
+
+func formatResponse(response string) string {
+	titleColorCode := "\033[1;92m"
+	resetCode := "\033[0m"
+
+	boldRegex := regexp.MustCompile(`\*\*(.*?)\*\*`)
+	formatted := boldRegex.ReplaceAllString(response, titleColorCode+"$1"+resetCode)
+	lines := strings.Split(formatted, "\n")
+	for i, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "*") {
+			lines[i] = strings.Replace(line, "*", "  \033[92m•\033[0m", 1)
+		}
+	}
+
+	return strings.Join(lines, "\n")
 }
 
 func sendQuery(query string) (Response, error) {
@@ -54,22 +78,37 @@ func sendQuery(query string) (Response, error) {
 }
 
 func main() {
-	fmt.Println("Welcome to ASX answer engine ask a question to get answers!")
+	welcomeColor := color.New(color.FgHiGreen).Add(color.Bold)
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	assistantColor := color.New(color.FgHiWhite).Add(color.Bold)
+	assistantAnsColor := color.New(color.FgHiGreen)
+	arrowColor := color.New(color.FgHiCyan).Add(color.Bold)
+	welcomeColor.Println("Welcome to ASX answer engine! Ask a question to get answers. Type 'exit' to quit.")
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("-> ")
+		var iteration = 0
+		if iteration == 0 {
+			fmt.Println()
+		}
+		arrowColor.Print("-> ")
 		scanner.Scan()
 		userInput := strings.TrimSpace(scanner.Text())
 		if userInput == "exit" {
-			fmt.Println("bye bye")
+			assistantColor.Println("bye bye")
 			break
 		}
+		s.Start()
 		response, err := sendQuery(scanner.Text())
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
-		fmt.Print("ASX: ")
-		fmt.Println(response.Response)
+		s.Stop()
+		fmt.Print("\r\033[K")
+		color.NoColor = false
+		fmt.Println()
+		assistantColor.Print("ASX: ")
+		assistantAnsColor.Println(formatResponse(response.Response))
+		iteration++
 	}
 }
